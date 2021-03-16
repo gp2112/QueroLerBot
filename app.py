@@ -25,6 +25,9 @@ errors = {
 	'text_not_found':'Infelizmente não consegui encontrar o texto ou o site ainda não é suportado :('
 }
 
+# delay entre cada checagem de menções em segundos
+DELAY = 30
+
 success = lambda url: f'Aqui está seu artigo sem paywall :)\n{url}'
 
 class Twitter:
@@ -56,7 +59,7 @@ class Twitter:
 			params['expansions'] = ','.join(fields)
 
 		r = requests.get(api_url+f'2/users/{user_id}/mentions', headers=self.headers, params=params)
-		print(r.json())
+		#print(r.json())
 		return r.json()
 
 	def get_tweet(self, tweet_ids, fields=None):#referenced_tweets
@@ -98,7 +101,7 @@ if __name__ == '__main__':
 			with open('last_id', 'w') as f:
 				f.write(since_id)
 
-
+			print(mentions)
 			for i, tweet in enumerate(mentions['data']):
 				user_name = mentions['includes']['users'][i]['username']
 				if 'referenced_tweets' not in tweet:
@@ -108,7 +111,8 @@ if __name__ == '__main__':
 
 				url = re.search("(?P<url>https?://[^\s]+)", t[0]['text']).group("url")
 				if url is None:
-					twitter.send_tweet(f'@{user_name} '+errors['url_not_found'], reply_to=tweet['id']) 
+					#twitter.send_tweet(f'@{user_name} '+errors['url_not_found'], reply_to=tweet['id'])
+					pass
 				else:
 					url = real_url(url) # change Twitter's URL for the original one
 					url = urlparse(url)
@@ -125,8 +129,7 @@ if __name__ == '__main__':
 							database.insert_article(**article)
 							r = twitter.send_tweet(f'@{user_name} '+success(article['telegraph']), reply_to=tweet['id'])
 							#print(r)
+			print('Agurdando Tweets...')
 
-
-		print('Agurdando Tweets...')
-		time.sleep(60)
+		time.sleep(DELAY)
 	
