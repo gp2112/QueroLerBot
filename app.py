@@ -1,5 +1,6 @@
 from requests_oauthlib import OAuth1
 from urllib.parse import urlparse
+from keys import consumer_key, consumer_secret, access_token_key, access_token_secret, token
 import antipay
 import requests
 import database
@@ -9,12 +10,6 @@ import re
 
 #queroler.bot@gmail.com
 
-consumer_key = 'LlvuNwtGH8by5h3k0fLa7OPCV'
-consumer_secret = 'iMq9BTm0FtHDzt4K4jWfItQHD1AwalbjtnlfN0E1jCxr8zoXxZ'
-access_token_key = '1371527601316057100-965A42fpcDdTSiOdCDspfYyl2pkjMj'
-access_token_secret = 'NrPxZKbHRJEGSOFNCpB1JcrWpmaxhfn9typgR0QshaQ5m'
-
-token = 'AAAAAAAAAAAAAAAAAAAAAIO3NgEAAAAAFQcmZ27%2BZhRWdOwUA4Xz8WNl2PQ%3DiWxqQZFfe3R9om4jviwrRypt91pLNGGmzVktNbo4r3XtAKsSBL'
 
 username = 'querolerbot'
 
@@ -31,7 +26,7 @@ DELAY = 15
 success = lambda url: f'Aqui está seu artigo sem paywall :)\n{url}'
 
 class Twitter:
-	def __init__(self, token, id='1371527601316057100'):
+	def __init__(self, token, id=None):
 		self.token = token
 		self.headers = {
 			'Authorization':'Bearer '+token
@@ -43,6 +38,7 @@ class Twitter:
 		data = r.json()['data']
 		self.id = data['id']
 
+		#usado para v1.1 (a feature de Tweetar ainda não existe na v2.0, que usa Bearer)
 	def oauth_header(self):
 		oauth = OAuth1(consumer_key, consumer_secret,
 					access_token_key, access_token_secret,
@@ -86,6 +82,7 @@ def real_url(url):
 if __name__ == '__main__':
 	
 	twitter = Twitter(token)
+	twitter.auth() #get user ID
 
 	with open('last_id', 'r') as f:
 		since_id = f.readline()
