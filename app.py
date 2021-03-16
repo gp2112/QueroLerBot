@@ -26,7 +26,7 @@ errors = {
 }
 
 # delay entre cada checagem de menções em segundos
-DELAY = 30
+DELAY = 15
 
 success = lambda url: f'Aqui está seu artigo sem paywall :)\n{url}'
 

@@ -10,5 +10,6 @@
 	"brasil.estadao.com.br":"n--noticia__content",
 	"internacional.estadao.com.br":"n--noticia__content",
 	"cultura.estadao.com.br":"n--noticia__content",
+	"link.estadao.com.br":"content-text",
 	"valor.globo.com":"mc-article-body"
 }
