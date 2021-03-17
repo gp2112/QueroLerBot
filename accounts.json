@@ -1,18 +1,17 @@
 [
-	{
-		"name":"OGloboPolitica",
-		"user_id":"156719729",
-		"last_id":"1372182267158749190"
-	},
-	{
-		"name":"folha",
-		"user_id":"14594813",
-		"last_id":"1372187980190846981"
-	},
-	{
-		"name":"EstadaoPolitica",
-		"user_id":"76369002",
-		"last_id":"1372155765499162627"
-	}
-
+    {
+        "name": "OGloboPolitica",
+        "user_id": "156719729",
+        "last_id": "1372191484804489220"
+    },
+    {
+        "name": "folha",
+        "user_id": "14594813",
+        "last_id": "1372198046801522697"
+    },
+    {
+        "name": "EstadaoPolitica",
+        "user_id": "76369002",
+        "last_id": "1372155765499162627"
+    }
 ]

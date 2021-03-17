@@ -73,6 +73,9 @@ class Twitter:
 		if since_id is not None:
 			params['since_id'] = since_id
 		r = requests.get(api_url+f'2/users/{user_id}/tweets', headers=self.headers, params=params)
+		if 'data' not in r.json():
+			return None
+		print(r.json())
 		return r.json()["data"]
 
 	def send_tweet(self, content, reply_to=None):
@@ -105,8 +108,8 @@ if __name__ == '__main__':
 	print('Bot rodando...')
 
 	while True:
-		mentions = twitter.get_mentions(since_id=since_id, fields=['referenced_tweets.id', 'author_id'])
-
+		#mentions = twitter.get_mentions(since_id=since_id, fields=['referenced_tweets.id', 'author_id'])
+		'''
 		if 'data' in mentions:
 			since_id = mentions['data'][0]['id']
 			with open('last_id', 'w') as f:
@@ -143,18 +146,20 @@ if __name__ == '__main__':
 						r = twitter.send_tweet(f'@{user_name} '+success(article['telegraph']), reply_to=tweet['id'])
 							#print(r)
 		print('Aguardando Tweets...')
-		time.sleep(DELAY)
+		time.sleep(DELAY)'''
 
 		for acc in tracked_accounts:
 			tweets = twitter.get_timeline(acc['user_id'], since_id=acc['last_id'])
-			if len(tweets) > 0: 
-				print(f"{len(tweets)} novos de @{acc['name']}")
+			if tweets is None:
+				continue
+			print(f"{len(tweets)} novos de @{acc['name']}")
+
+			acc['last_id'] = tweets[0]['id']
+			with open('accounts.json', 'w') as f:
+				json.dump(tracked_accounts, f, indent=4)
 
 			for tweet in tweets:
-				acc['last_id'] = tweet['id']
-				with open('accounts.json', 'w') as f:
-					json.dump(tracked_accounts, f, indent=4)
-
+				
 				url = re.search("(?P<url>https?://[^\s]+)", tweet['text']).group("url")
 				url = real_url(url) # change Twitter's URL for the original one
 				url = urlparse(url)
