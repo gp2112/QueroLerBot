@@ -21,7 +21,7 @@ errors = {
 }
 
 # delay entre cada checagem de menções em segundos
-DELAY = 15
+DELAY = 10
 
 success = lambda url: f'Aqui está seu artigo sem paywall :)\n{url}'
 
@@ -67,6 +67,13 @@ class Twitter:
 		r = requests.get(api_url+'2/tweets', headers=self.headers, params=params)
 		return r.json()['data']
 
+	def get_timeline(self, user_id, since_id=None):
+		params = {}
+		if since_id is not None:
+			params['since_id'] = since_id
+		r = requests.get(api_url+f'2/users/{user_id}/tweets', headers=self.headers, params=params)
+		return r.json()["data"]
+
 	def send_tweet(self, content, reply_to=None):
 		data = {'status':content}
 		if reply_to is not None:
@@ -87,12 +94,16 @@ if __name__ == '__main__':
 	with open('last_id', 'r') as f:
 		since_id = f.readline()
 
+	with open('accounts.json', 'r') as f:
+		tracked_accounts = json.load(f)
+
 	if len(since_id) == 0: since_id=None
 
 	print('Bot rodando...')
 
 	while True:
 		mentions = twitter.get_mentions(since_id=since_id, fields=['referenced_tweets.id', 'author_id'])
+
 		if 'data' in mentions:
 			since_id = mentions['data'][0]['id']
 			with open('last_id', 'w') as f:
@@ -128,7 +139,34 @@ if __name__ == '__main__':
 						database.insert_article(**article)
 						r = twitter.send_tweet(f'@{user_name} '+success(article['telegraph']), reply_to=tweet['id'])
 							#print(r)
-			print('Agurdando Tweets...')
+		print('Aguardando Tweets...')
+		time.sleep(DELAY)
+
+		for acc in tracked_accounts:
+			tweets = twitter.get_timeline(acc['user_id'], since_id=acc['last_id'])
+			if len(tweets) > 0: 
+				print(f"{len(tweets)} novos de @{acc['name']}")
+
+			for tweet in tweets:
+				url = re.search("(?P<url>https?://[^\s]+)", tweet['text']).group("url")
+				url = real_url(url) # change Twitter's URL for the original one
+				url = urlparse(url)
+				url = f'{url.scheme}://{url.netloc}{url.path}' # erase GET params ;)
+				article = database.get_article(main_url=url)
+				if article is not None:
+					r = twitter.send_tweet(f"@{acc['name']} Leia este artigo sem paywall :)\n"+article[0], reply_to=tweet['id'])
+					#print(r)
+				else:
+					article = antipay.break_paywall(url)
+					if article is None:
+						twitter.send_tweet(f'@{user_name} '+errors['text_not_found'], reply_to=tweet['id'])
+					else:
+						database.insert_article(**article)
+						r = twitter.send_tweet(f"@{acc['name']} Leia este artigo sem paywall :)\n"+article['telegraph'], reply_to=tweet['id'])
+						#print(r)
+
+		
+		print('Aguardando Menções...')
 
 		time.sleep(DELAY)
 	
