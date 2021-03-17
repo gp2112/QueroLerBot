@@ -87,6 +87,8 @@ def real_url(url):
 	r = requests.get(url)
 	return r.url
 
+
+
 if __name__ == '__main__':
 	
 	twitter = Twitter(token)
@@ -149,6 +151,10 @@ if __name__ == '__main__':
 				print(f"{len(tweets)} novos de @{acc['name']}")
 
 			for tweet in tweets:
+				acc['last_id'] = tweet['id']
+				with open('accounts.json', 'w') as f:
+					json.dump(tracked_accounts, f, indent=4)
+
 				url = re.search("(?P<url>https?://[^\s]+)", tweet['text']).group("url")
 				url = real_url(url) # change Twitter's URL for the original one
 				url = urlparse(url)
