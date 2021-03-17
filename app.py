@@ -108,8 +108,8 @@ if __name__ == '__main__':
 	print('Bot rodando...')
 
 	while True:
-		#mentions = twitter.get_mentions(since_id=since_id, fields=['referenced_tweets.id', 'author_id'])
-		'''
+		mentions = twitter.get_mentions(since_id=since_id, fields=['referenced_tweets.id', 'author_id'])
+		
 		if 'data' in mentions:
 			since_id = mentions['data'][0]['id']
 			with open('last_id', 'w') as f:
@@ -146,7 +146,7 @@ if __name__ == '__main__':
 						r = twitter.send_tweet(f'@{user_name} '+success(article['telegraph']), reply_to=tweet['id'])
 							#print(r)
 		print('Aguardando Tweets...')
-		time.sleep(DELAY)'''
+		time.sleep(DELAY)
 
 		for acc in tracked_accounts:
 			tweets = twitter.get_timeline(acc['user_id'], since_id=acc['last_id'])
