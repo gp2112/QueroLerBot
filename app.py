@@ -160,7 +160,7 @@ if __name__ == '__main__':
 				else:
 					article = antipay.break_paywall(url)
 					if article is None:
-						twitter.send_tweet(f'@{user_name} '+errors['text_not_found'], reply_to=tweet['id'])
+						continue
 					else:
 						database.insert_article(**article)
 						r = twitter.send_tweet(f"@{acc['name']} Leia este artigo sem paywall :)\n"+article['telegraph'], reply_to=tweet['id'])
