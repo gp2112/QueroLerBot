@@ -8,6 +8,7 @@ import database
 import sys
 import time
 import re
+import random
 
 #queroler.bot@gmail.com
 
@@ -21,10 +22,21 @@ errors = {
 	'text_not_found':'Infelizmente não consegui encontrar o texto ou o site ainda não é suportado :(\nVeja os sites compatíveis no meu perfil :)'
 }
 
+succ_msgs = (
+		'Aqui está seu artigo sem paywall :)',
+		'Bip, bop',
+		'Saindo do forno ;)',
+		'Tá sentindo? Cherinho de artigo sem paywall <3',
+		'Ahoy 🏴‍☠️'
+	)
+
 # delay entre cada checagem de menções em segundos
 DELAY = 15
 
-success = lambda url: f'Aqui está seu artigo sem paywall :)\n{url}'
+def success(url):
+	random.seed(time.time())
+	i = random.randint(0, len(succ_msgs)-1)
+	return succ_msgs[i]+'\n'+url
 
 class Twitter:
 	def __init__(self, token, id=None):
