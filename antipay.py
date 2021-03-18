@@ -12,16 +12,11 @@ banned_tags = (
 
 pastebin_token = '7Fp3iWc0yHZ_J9J85kOQ0bSJt0W62c5-'
 
-def gen_pastebin(token, content, title):
-	print(title)
-	data = {
-		'api_dev_key':token,
-		'api_paste_code':content.strip("'"),
-		'api_option':'paste',
-		'api_paste_name':title.strip()[0:100]
-	}
-	r = requests.post('https://pastebin.com/api/api_post.php', data=data) 
-	return r.text
+def gen_pastebin(content, title): 
+	print(title) 
+	r = requests.post('http://penyacom.org/api/v1/paste.php', data={'code':title+'\n\n'+content})
+	return r.json()['raw_link']
+
 
 def remove_tags(el, tags):
 	for tag in tags:
@@ -51,7 +46,7 @@ def break_paywall(url):
 	if parag is None: 
 		return None
 
-	r = gen_pastebin(pastebin_token, parag, title)
+	r = gen_pastebin(parag, title)
 	data = {'telegraph':r, 'title':title, 'main_url':url}
 	return data
 

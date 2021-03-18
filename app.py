@@ -18,11 +18,11 @@ api_url = 'https://api.twitter.com/'
 
 errors = {
 	'url_not_found':'Não achei nenhum link :(',
-	'text_not_found':'Infelizmente não consegui encontrar o texto ou o site ainda não é suportado :('
+	'text_not_found':'Infelizmente não consegui encontrar o texto ou o site ainda não é suportado :(\nVeja os sites compatíveis no meu perfil :)'
 }
 
 # delay entre cada checagem de menções em segundos
-DELAY = 10
+DELAY = 15
 
 success = lambda url: f'Aqui está seu artigo sem paywall :)\n{url}'
 
@@ -66,6 +66,8 @@ class Twitter:
 		if fields is not None:
 			params['expansions'] = ','.join(fields)
 		r = requests.get(api_url+'2/tweets', headers=self.headers, params=params)
+		if 'data' not in r.json():
+			return None
 		return r.json()['data']
 
 	def get_timeline(self, user_id, since_id=None):
@@ -124,6 +126,7 @@ if __name__ == '__main__':
 						continue
 				else:
 					t = twitter.get_tweet([tweet['referenced_tweets'][0]['id']])
+					if t is None: continue
 					print(f"{tweet['id']} {t[0]['text']} ")
 
 					url = re.search("(?P<url>https?://[^\s]+)", t[0]['text']).group("url") # Gets the first URL
@@ -145,9 +148,9 @@ if __name__ == '__main__':
 						database.insert_article(**article)
 						r = twitter.send_tweet(f'@{user_name} '+success(article['telegraph']), reply_to=tweet['id'])
 							#print(r)
-		print('Aguardando Tweets...')
+			print('Aguardando Tweets...')
 		time.sleep(DELAY)
-
+		'''
 		for acc in tracked_accounts:
 			tweets = twitter.get_timeline(acc['user_id'], since_id=acc['last_id'])
 			if tweets is None:
@@ -177,8 +180,8 @@ if __name__ == '__main__':
 						r = twitter.send_tweet(f"@{acc['name']} Leia este artigo sem paywall :)\n"+article['telegraph'], reply_to=tweet['id'])
 						#print(r)
 
-		
-		print('Aguardando Menções...')
+		'''
+		#print('Aguardando Menções...')
 
-		time.sleep(DELAY)
+		#time.sleep(DELAY)
 	
