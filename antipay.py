@@ -31,15 +31,16 @@ def get_news_content(url):
 	r = requests.get(url)
 	r.encoding = r.apparent_encoding
 	soup = BeautifulSoup(r.text, 'html.parser')
-	with open('news_classes.json', 'r') as f: 
-		domains = json.load(f)
-	if domain in domains:
-		class_ = domains[domain]
+	with open('classes', 'r') as f: 
+		classes = f.read().split('\n')
+
+	for class_ in classes:
 		el = soup.find(class_=class_)
-		parag = ''
-		for p in el.findAll('p'):
-			parag += str(remove_tags(p, banned_tags))
-		return parag, soup.title.string
+		if el is not None:
+			parag = ''
+			for p in el.findAll('p'):
+				parag += str(remove_tags(p, banned_tags))
+			return parag, soup.title.string
 	return None, None
 
 
