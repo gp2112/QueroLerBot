@@ -38,7 +38,7 @@ def get_news_content(url):
 		el = soup.find(class_=classes[domain])
 		if el is not None:
 			parag = ''
-			for p in el.findAll('p'):
+			for p in el.findAll(('p', 'img')):
 				parag += str(remove_tags(p, banned_tags))
 			return parag, soup.title.string
 	return None, None
