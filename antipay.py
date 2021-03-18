@@ -54,7 +54,7 @@ def break_paywall(url):
 	telegraph = Telegraph()
 	telegraph.create_account(short_name=telegraph_user)
 
-	r = telegraph.create_page(title, html_content=parag, author_name=telegraph_user)
+	r = telegraph.create_page(title, html_content=parag, author_name=urlparse(url).netloc)
 
 	data = {'telegraph':'http://graph.org/'+r['path'], 'title':title, 'main_url':url}
 	return data
