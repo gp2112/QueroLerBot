@@ -51,6 +51,8 @@ def break_paywall(url):
 
 	#r = gen_pastebin(parag, title)
 
+	parag += f'<a href="{url}">Artigo Original</a>'
+
 	telegraph = Telegraph()
 	telegraph.create_account(short_name=telegraph_user)
 
