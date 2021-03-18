@@ -31,11 +31,11 @@ def get_news_content(url):
 	r = requests.get(url)
 	r.encoding = r.apparent_encoding
 	soup = BeautifulSoup(r.text, 'html.parser')
-	with open('classes', 'r') as f: 
-		classes = f.read().split('\n')
+	with open('news_classes', 'r') as f: 
+		classes = json.load(f)
 
-	for class_ in classes:
-		el = soup.find(class_=class_)
+	if domain in classes:
+		el = soup.find(class_=classes[domain])
 		if el is not None:
 			parag = ''
 			for p in el.findAll('p'):
