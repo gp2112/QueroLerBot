@@ -27,7 +27,8 @@ succ_msgs = (
 		'Bip, bop',
 		'Saindo do forno ;)',
 		'Tá sentindo? Cherinho de artigo sem paywall <3',
-		'Ahoy 🏴‍☠️'
+		'Ahoy 🏴‍☠️',
+		'Hello There...'
 	)
 
 # delay entre cada checagem de menções em segundos
@@ -133,9 +134,10 @@ if __name__ == '__main__':
 			for i, tweet in enumerate(mentions['data']):
 				user_name = mentions['includes']['users'][i]['username']
 				if 'referenced_tweets' not in tweet:
-					url = re.search("(?P<url>https?://[^\s]+)", tweet['text']).group("url")
-					if url is None:
+					url = re.search("(?P<url>https?://[^\s]+)", tweet['text'])
+					if url.group("url") is None:
 						continue
+					url = url.group("url")
 				else:
 					t = twitter.get_tweet([tweet['referenced_tweets'][0]['id']])
 					if t is None: continue
