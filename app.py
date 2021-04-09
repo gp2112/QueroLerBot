@@ -102,10 +102,7 @@ def real_url(url):
 	r = requests.get(url)
 	return r.url
 
-
-
-if __name__ == '__main__':
-	
+def main():
 	twitter = Twitter(token)
 	twitter.auth() #get user ID
 
@@ -162,3 +159,7 @@ if __name__ == '__main__':
 							#print(r)
 			print('Aguardando Tweets...')
 		time.sleep(DELAY)
+
+if __name__ == '__main__':
+	main()
+	
