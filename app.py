@@ -10,9 +10,6 @@ import time
 import re
 import random
 
-#queroler.bot@gmail.com
-
-
 username = 'querolerbot'
 
 api_url = 'https://api.twitter.com/'
