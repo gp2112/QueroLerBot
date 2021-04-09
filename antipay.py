@@ -11,14 +11,6 @@ banned_tags = (
 		'span', 'small', 'div', 'label', 'svg', 'g', 'path', 'script'
 	)
 
-'''
-pastebin_token = '7Fp3iWc0yHZ_J9J85kOQ0bSJt0W62c5-'
-
-def gen_pastebin(content, title): 
-	print(title) 
-	r = requests.post('http://penyacom.org/api/v1/paste.php', data={'code':title+'\n\n'+content})
-	return r.json()['raw_link']
-'''
 
 def remove_tags(el, tags):
 	for tag in tags:
