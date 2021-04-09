@@ -27,7 +27,7 @@ succ_msgs = (
 		'Bip, bop',
 		'Saindo do forno ;)',
 		'Tá sentindo? Cherinho de artigo sem paywall <3',
-		'Ahoy 🏴‍☠️',
+		'Ahoy☠️',
 		'Hello There...'
 	)
 
@@ -135,7 +135,7 @@ if __name__ == '__main__':
 				user_name = mentions['includes']['users'][i]['username']
 				if 'referenced_tweets' not in tweet:
 					url = re.search("(?P<url>https?://[^\s]+)", tweet['text'])
-					if url.group("url") is None:
+					if url is None:
 						continue
 					url = url.group("url")
 				else:
@@ -143,10 +143,11 @@ if __name__ == '__main__':
 					if t is None: continue
 					print(f"{tweet['id']} {t[0]['text']} ")
 
-					url = re.search("(?P<url>https?://[^\s]+)", t[0]['text']).group("url") # Gets the first URL
+					url = re.search("(?P<url>https?://[^\s]+)", t[0]['text']) # Gets the first URL
 					if url is None:
 						#twitter.send_tweet(f'@{user_name} '+errors['url_not_found'], reply_to=tweet['id'])
 						continue
+					url = url.group('url')
 				url = real_url(url) # change Twitter's URL for the original one
 				url = urlparse(url)
 				url = f'{url.scheme}://{url.netloc}{url.path}' # erase GET params ;)
