@@ -93,3 +93,6 @@ def delete_article(main_url=None, title=None):
 		cursor.execute('DELETE FROM articles')
 	conn.commit()
 	conn.close()
+
+if __name__ == '__main__':
+	create_db()
