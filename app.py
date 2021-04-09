@@ -165,38 +165,3 @@ if __name__ == '__main__':
 							#print(r)
 			print('Aguardando Tweets...')
 		time.sleep(DELAY)
-		'''
-		for acc in tracked_accounts:
-			tweets = twitter.get_timeline(acc['user_id'], since_id=acc['last_id'])
-			if tweets is None:
-				continue
-			print(f"{len(tweets)} novos de @{acc['name']}")
-
-			acc['last_id'] = tweets[0]['id']
-			with open('accounts.json', 'w') as f:
-				json.dump(tracked_accounts, f, indent=4)
-
-			for tweet in tweets:
-				
-				url = re.search("(?P<url>https?://[^\s]+)", tweet['text']).group("url")
-				url = real_url(url) # change Twitter's URL for the original one
-				url = urlparse(url)
-				url = f'{url.scheme}://{url.netloc}{url.path}' # erase GET params ;)
-				article = database.get_article(main_url=url)
-				if article is not None:
-					r = twitter.send_tweet(f"@{acc['name']} Leia este artigo sem paywall :)\n"+article[0], reply_to=tweet['id'])
-					#print(r)
-				else:
-					article = antipay.break_paywall(url)
-					if article is None:
-						continue
-					else:
-						database.insert_article(**article)
-						r = twitter.send_tweet(f"@{acc['name']} Leia este artigo sem paywall :)\n"+article['telegraph'], reply_to=tweet['id'])
-						#print(r)
-
-		'''
-		#print('Aguardando Menções...')
-
-		#time.sleep(DELAY)
-	
