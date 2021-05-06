@@ -107,7 +107,7 @@ def main():
 	twitter.auth() #get user ID
 
 	with open('last_id', 'r') as f:
-		since_id = f.readline()
+		since_id = f.readline().strip()
 
 	if len(since_id) == 0: since_id=None
 
