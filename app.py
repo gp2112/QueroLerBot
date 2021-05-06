@@ -109,9 +109,6 @@ def main():
 	with open('last_id', 'r') as f:
 		since_id = f.readline()
 
-	with open('accounts.json', 'r') as f:
-		tracked_accounts = json.load(f)
-
 	if len(since_id) == 0: since_id=None
 
 	print('Bot rodando...')
