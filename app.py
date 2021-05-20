@@ -1,6 +1,7 @@
 from requests_oauthlib import OAuth1
 from urllib.parse import urlparse
 from keys import consumer_key, consumer_secret, access_token_key, access_token_secret, token
+from datetime import datetime, timedelta
 import json
 import antipay
 import requests
@@ -24,7 +25,7 @@ succ_msgs = (
 		'Bip, bop',
 		'Saindo do forno ;)',
 		'Tá sentindo? Cherinho de artigo sem paywall <3',
-		'Ahoy☠️',
+		'Ahoy',
 		'Hello There...'
 	)
 
@@ -56,10 +57,10 @@ class Twitter:
 					signature_method="HMAC-SHA1")
 		return oauth
 
-	def get_mentions(self, since_id=None, user_id=None, fields=None):
+	def get_mentions(self, start_time=None, user_id=None, fields=None):
 		params = {}
-		if since_id is not None:
-			params['since_id'] = since_id
+		if start_time is not None:
+			params['start_time'] = start_time
 		if user_id is None:
 			user_id = self.id
 		if fields is not None:
@@ -106,20 +107,13 @@ def main():
 	twitter = Twitter(token)
 	twitter.auth() #get user ID
 
-	with open('last_id', 'r') as f:
-		since_id = f.readline().strip()
-
-	if len(since_id) == 0: since_id=None
-
 	print('Bot rodando...')
 
+	l_time = datetime.now()
 	while True:
-		mentions = twitter.get_mentions(since_id=since_id, fields=['referenced_tweets.id', 'author_id'])
+		mentions = twitter.get_mentions(start_time=l_time.isoformat()+'Z', fields=['referenced_tweets.id', 'author_id'])
 		
 		if 'data' in mentions:
-			since_id = mentions['data'][0]['id']
-			with open('last_id', 'w') as f:
-				f.write(since_id)
 
 			print(mentions)
 			for i, tweet in enumerate(mentions['data']):
@@ -156,6 +150,7 @@ def main():
 							#print(r)
 			print('Aguardando Tweets...')
 		time.sleep(DELAY)
+		l_time = datetime.now()-timedelta(seconds=15)
 
 if __name__ == '__main__':
 	main()
