@@ -1,15 +1,13 @@
 from requests_oauthlib import OAuth1
-from querolerbot import antipay, database
+from config import read_config, check_config_file
+import database
 import requests
 import time
 import random
 import os
-import toml
 
-
-with open('config.toml') as f:
-    config = toml.load(f)
-
+check_config_file()
+config = read_config()
 username = config['twitter']['username']
 api_url = config['twitter']['api_url']
 
@@ -25,6 +23,12 @@ succ_msgs = config['messages']['success']
 
 # delay entre cada checagem de menções em segundos
 DELAY = config['general']['delay']
+
+try:
+    f = open(config['database']['name'])
+    f.close()
+except FileNotFoundError:
+    database.create_db()
 
 
 def success(url):

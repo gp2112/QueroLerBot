@@ -1,9 +1,7 @@
+from config import read_config
 import sqlite3
-import toml
 
-with open('config.toml') as f:
-    config = toml.load(f)
-
+config = read_config()
 db_name = config['database']['name']
 
 def create_db():
