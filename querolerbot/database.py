@@ -1,6 +1,10 @@
 import sqlite3
+import toml
 
-db_name = 'articles.db'
+with open('config.toml') as f:
+    config = toml.load(f)
+
+db_name = config['database']['name']
 
 def create_db():
 	print(f'Criando {db_name}...')
