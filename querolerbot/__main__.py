@@ -1,7 +1,7 @@
+from querolerbot import Twitter, real_url, DELAY, token, success, errors
+from querolerbot import antipay
+from querolerbot import database
 from urllib.parse import urlparse
-from __init__ import Twitter, real_url, DELAY, token, success, errors
-import antipay
-import database
 import time
 import re
 import os

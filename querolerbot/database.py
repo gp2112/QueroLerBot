@@ -1,4 +1,4 @@
-from config import read_config
+from querolerbot.config import read_config
 import sqlite3
 
 config = read_config()

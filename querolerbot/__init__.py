@@ -1,6 +1,6 @@
 from requests_oauthlib import OAuth1
-from config import read_config, check_config_file
-import database
+from querolerbot.config import read_config, check_config_file
+from querolerbot import database
 import requests
 import time
 import random
