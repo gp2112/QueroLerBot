@@ -1,4 +1,17 @@
 from querolerbot import *
+from urllib.parse import urlparse
+from datetime import datetime, timedelta
+import re
+
+
+def get_last_id():
+    with open('last_id') as f:
+        return f.read().strip()
+
+
+def write_last_id(last_id):
+    with open('last_id', 'w') as f:
+        f.write(last_id)
 
 def main():
    twitter = Twitter(token)
@@ -6,12 +19,15 @@ def main():
 
    print('Bot rodando...')
 
-   l_time = datetime.now()
+   l_time = datetime.utcnow()
+   last_id = get_last_id()
+
    while True:
-      mentions = twitter.get_mentions(start_time=l_time.isoformat()+'Z', fields=['referenced_tweets.id', 'author_id'])
+      mentions = twitter.get_mentions(last_id, fields=['referenced_tweets.id', 'author_id'])
+      print(mentions)
+
       if 'data' in mentions:
 
-         print(mentions)
          for i, tweet in enumerate(mentions['data']):
             user_name = mentions['includes']['users'][i]['username']
             if 'referenced_tweets' not in tweet:
@@ -45,6 +61,8 @@ def main():
                   r = twitter.send_tweet(f'@{user_name} '+success(article['telegraph']), reply_to=tweet['id'])
                      #print(r)
          print('Aguardando Tweets...')
+         write_last_id(last_id)
+
       time.sleep(DELAY)
       l_time = datetime.now()-timedelta(seconds=DELAY)
 
