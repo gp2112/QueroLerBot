@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "querolerbot"
-version = "1.0.0"
+version = "0.1.0-beta"
 description = "Um bot de twitter que remove paywalls!"
 authors = ["gp2112 <me@guip.dev>"]
 license = "AGPLv3"
