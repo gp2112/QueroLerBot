@@ -16,13 +16,10 @@
       nixosModule = nixosModules."${name}";
 
       # Nixpkgs overlay providing the application
-      overlay = nixpkgs.lib.composeManyExtensions [
-        poetry2nix.overlay
-        (final: prev: {
+      overlays.default = _l: prev {
           # The application
           ${name} = prev.callPackage ./default.nix {};
-        })
-      ];
+        };
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
