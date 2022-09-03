@@ -16,7 +16,7 @@
       nixosModule = nixosModules."${name}";
 
       # Nixpkgs overlay providing the application
-      overlays.default = _l: prev {
+      overlays.default = _: prev {
           # The application
           ${name} = prev.callPackage ./default.nix {};
         };
