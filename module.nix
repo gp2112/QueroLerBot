@@ -90,7 +90,7 @@ in {
       group = cfg.user;
     };
 
-    groups.${cfg.user} = {};
+    users.groups.${cfg.user} = {};
 
     systemd.services.querolerbot = {
       description = "Um bot para driblar os paywalls do twitter";
