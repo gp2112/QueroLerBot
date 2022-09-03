@@ -40,5 +40,6 @@
         # build
         packages.${name} = pkgs.${name};
 
+        overlays = [ self.overlay ];
       }));
 }
