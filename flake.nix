@@ -20,7 +20,7 @@
         poetry2nix.overlay
         (final: prev: {
           # The application
-          ${name} = final.callPackage ./default.nix {};
+          ${name} = prev.callPackage ./default.nix {};
         })
       ];
     } // (flake-utils.lib.eachDefaultSystem (system:
@@ -40,6 +40,5 @@
         # build
         packages.${name} = pkgs.${name};
 
-        overlays = [ self.overlay ];
       }));
 }
