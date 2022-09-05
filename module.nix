@@ -19,6 +19,11 @@ in {
       default = "querolerbot";
     };
 
+    home = mkOption {
+      type = types.str;
+      default = "/var/querolerbot/";
+    };
+
     credentials = mkOption {
       type = types.submodule {
         options = {
@@ -86,6 +91,7 @@ in {
       settingsFormat.generate "querolerbot-config.toml" cfg.settings;
 
     users.users.${cfg.user} = {
+      inherit (cfg) home;
       isSystemUser = true;
       group = cfg.user;
     };
