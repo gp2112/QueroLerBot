@@ -1,18 +1,20 @@
-{ stdenv, lib, poetry2nix, ... }:
+{ lib, python3Packages, ... }:
 
 let
   vnumber = "1.0.0";
-  manifest = (lib.importTOML ./pyproject.toml).tool.poetry;
+  manifest = (lib.importTOML ./pyproject.toml).project;
 in
-poetry2nix.mkPoetryApplication rec {
+python3Packages.buildPythonPackage rec {
 
   pname = manifest.name;
   version = "${vnumber}-beta";
 
-  projectDir = ./.;
+  format = "pyproject";
 
-  meta = with lib; {
-    description = manifest.description;
+  src = ./.;
+
+  meta = with lib; with manifest; {
+    inherit description;
     homepage = "https://github.com/gp2112/querolerbot";
     license = licenses.agpl3;
     maintainers = [ maintainers.gp2112 ];
