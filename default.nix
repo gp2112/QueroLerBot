@@ -1,8 +1,15 @@
-{ lib, python310Packages, pkgs, ... }:
+{ lib, python310Packages, pkgs, callPackage, ... }:
 
 let
   vnumber = "1.0.0";
   # manifest = (lib.importTOML ./pyproject.toml).project;
+  telegraph = callPackage ./telegraph.nix {
+    inherit (python310Packages) buildPythonPackage;
+    inherit (pkgs.python310Packages) requests;
+    inherit (pkgs.python310Packages) httpx;
+    inherit (python310Packages) pytestCheckHook;
+    inherit (python310Packages) pythonOlder;
+  };
 in
 python310Packages.buildPythonPackage rec {
 
@@ -22,6 +29,7 @@ python310Packages.buildPythonPackage rec {
     toml
     beautifulsoup4
     requests-oauthlib
+    telegraph
   ];
 
   meta = with lib; {
