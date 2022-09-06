@@ -1,6 +1,7 @@
 import toml
 import os
 
+HOME = os.environ.get('HOME')
 
 config_path = os.environ.get('QUEROLER_CONFIG_PATH', '')
 
