@@ -1,5 +1,5 @@
 from requests_oauthlib import OAuth1
-from querolerbot.config import read_config, check_config_file
+from querolerbot.config import read_config, check_config_file, HOME
 from querolerbot import database
 import requests
 import time
@@ -25,7 +25,7 @@ succ_msgs = config['messages']['success']
 DELAY = config['general']['delay']
 
 try:
-    f = open(config['database']['name'])
+    f = open(HOME+'/'+config['database']['name'])
     f.close()
 except FileNotFoundError:
     database.create_db()
