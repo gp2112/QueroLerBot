@@ -1,10 +1,8 @@
 import toml
 import os
 
-user = os.environ.get('USER')
 
-default_path = f'/home/{user}/.config/querolerbot.toml'
-config_path = os.environ.get('QUEROLER_CONFIG_PATH', default_path)
+config_path = os.environ.get('QUEROLER_CONFIG_PATH', '')
 
 default = {
         'general': {

@@ -24,6 +24,11 @@ in {
       default = "/var/querolerbot/";
     };
 
+    configFile = mkOption {
+      type = types.str;
+      default = "/etc/querolerbot.toml";
+    };
+
     credentials = mkOption {
       type = types.submodule {
         options = {
@@ -107,6 +112,7 @@ in {
         QUEROLER_ACCESS_KEY = accessKey;
         QUEROLER_ACCESS_SECRET = accessSecret;
         QUEROLER_TOKEN = token;
+        QUEROLER_CONFIG_PATH = cfg.configFile;
       };
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/querolerbot";
