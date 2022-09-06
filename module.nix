@@ -99,6 +99,7 @@ in {
       inherit (cfg) home;
       isSystemUser = true;
       group = cfg.user;
+      createHome = true;
     };
 
     users.groups.${cfg.user} = {};

@@ -1,8 +1,8 @@
-from querolerbot.config import read_config
+from querolerbot.config import read_config, home
 import sqlite3
 
 config = read_config()
-db_name = config['database']['name']
+db_name = home+'/'+config['database']['name']
 
 def create_db():
 	print(f'Criando {db_name}...')
