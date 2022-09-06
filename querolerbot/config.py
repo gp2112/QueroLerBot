@@ -3,7 +3,7 @@ import os
 
 HOME = os.environ.get('HOME')
 
-config_path = os.environ.get('QUEROLER_CONFIG_PATH', '')
+config_path = os.environ.get('QUEROLER_CONFIG_PATH', HOME+"/config.toml")
 
 default = {
         'general': {

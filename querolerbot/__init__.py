@@ -5,17 +5,19 @@ import requests
 import time
 import random
 import os
+import sys
+import toml
 
 check_config_file()
 config = read_config()
 username = config['twitter']['username']
 api_url = config['twitter']['api_url']
 
-consumer_key = os.environ.get('QUEROLER_CONSUMER_KEY', '')
-consumer_secret = os.environ.get('QUEROLER_CONSUMER_SECRET', '')
-access_token_key = os.environ.get('QUEROLER_ACCESS_KEY', '')
-access_token_secret = os.environ.get('QUEROLER_ACCESS_SECRET', '')
-token = os.environ.get('QUEROLER_TOKEN', '')
+consumer_key = os.environ.get('QUEROLER_CONSUMER_KEY', 'NO_CONSUMER_KEY')
+consumer_secret = os.environ.get('QUEROLER_CONSUMER_SECRET', 'NO_CONSUMER_SECRET')
+access_token_key = os.environ.get('QUEROLER_ACCESS_KEY', 'NO_A_TOKEN')
+access_token_secret = os.environ.get('QUEROLER_ACCESS_SECRET', 'NO_A_TOKEN_SECRET')
+token = os.environ.get('QUEROLER_BAERER_TOKEN', 'NO_TOKEN')
 
 errors = config['messages']['error']
 
@@ -23,6 +25,18 @@ succ_msgs = config['messages']['success']
 
 # delay entre cada checagem de menções em segundos
 DELAY = config['general']['delay']
+
+try:
+    f = open(HOME+'/.auth', 'r')
+    env = toml.load(f)
+    f.close()
+    consumer_key = env['QUEROLER_CONSUMER_KEY']
+    consumer_secret = env['QUEROLER_CONSUMER_SECRET']
+    access_token_key = env['QUEROLER_ACCESS_KEY']
+    access_token_secret = env['QUEROLER_ACCESS_SECRET']
+    token = env['QUEROLER_BAERER_TOKEN']
+except FileNotFoundError:
+    sys.exit(1)
 
 try:
     f = open(HOME+'/'+config['database']['name'])
@@ -47,8 +61,14 @@ class Twitter:
 
     def auth(self):
         r = requests.get(api_url+'2/users/by/username/'+username, headers=self.headers)
-        data = r.json()['data']
-        self.id = data['id']
+        try:
+            data = r.json()['data']
+            self.id = data['id']
+        except KeyError:
+            print(consumer_key, consumer_secret, access_token_key, access_token_secret, token)
+            print(r.json())
+            sys.exit(1)
+
 
     def oauth_header(self):
         oauth = OAuth1(consumer_key, consumer_secret,

@@ -1,13 +1,14 @@
 from querolerbot import Twitter, real_url, DELAY, token, success, errors
 from querolerbot import antipay
 from querolerbot import database
+from querolerbot.config import HOME
 from urllib.parse import urlparse
 import time
 import re
 import os
 
 
-last_id_path = os.environ.get('QUEROLER_LAST_ID_PATH', 'last_id')
+last_id_path = os.environ.get('QUEROLER_LAST_ID_PATH', HOME) + '/last_id'
 
 
 def get_last_id():
@@ -21,6 +22,7 @@ def write_last_id(last_id):
 
 
 def main():
+
     twitter = Twitter(token)
     twitter.auth()  # get user ID
 
@@ -70,8 +72,6 @@ def main():
                     else:
                         database.insert_article(**article)
                         r = twitter.send_tweet(f'@{user_name} '+success(article['telegraph']), reply_to=tweet['id'])
-                print(r)
-
 
             print('Aguardando Tweets...')
             write_last_id(last_id)

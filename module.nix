@@ -38,9 +38,6 @@ in {
           accessSecret = mkOption {
             type = types.str;
           };
-          accessSecretKey = mkOption {
-            type = types.str;
-          };
           consumerKey = mkOption {
             type = types.str;
           };
@@ -93,7 +90,7 @@ in {
     };
 
     environment.etc."querolerbot.toml".source =
-      settingsFormat.generate "querolerbot-config.toml" cfg.settings;
+      settingsFormat.generate "config.toml" cfg.settings;
 
     users.users.${cfg.user} = {
       inherit (cfg) home;
@@ -105,21 +102,22 @@ in {
     users.groups.${cfg.user} = {};
 
     systemd.services.querolerbot = {
-      description = "Um bot para driblar os paywalls do twitter";
+      description = "QueroLerBot";
       wantedBy = [ "multi-user.target" ];
       environment = with cfg.credentials; {
         QUEROLER_CONSUMER_KEY = consumerKey;
         QUEROLER_CONSUMER_SECRET = consumerSecret;
         QUEROLER_ACCESS_KEY = accessKey;
         QUEROLER_ACCESS_SECRET = accessSecret;
-        QUEROLER_TOKEN = token;
-        QUEROLER_CONFIG_PATH = cfg.configFile;
+        QUEROLER_BAERER_TOKEN = token;
+        QUEROLER_CONFIG_PATH = "/etc/querolerbot.toml";
       };
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/querolerbot";
         Restart = "on-failure";
         User = cfg.user;
       };
+      reloadIfChanged = true;
     };
   };
 }
