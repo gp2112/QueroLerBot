@@ -14,18 +14,18 @@ Para evitar fazer o mesmo processo para os mesmos artigos, tanto a url do artigo
 conteúdo no graph.org, ficam salvos num simples banco de dados sqlite. 
 Assim, quando o bot é acionado, a primeira coisa que ele faz é verificar se o artigo já existe na db.
 
-## Como rodar ?
+## Como rodar ? (sem nix)
 
 1. Faça o download ou clone o repositório:
   ```bash 
   git clone https://github.com/gp2112/QueroLerBot.git
   ```
-2. Usando o poetry:
+2. Usando o pip:
   ```bash
-  poetry install
+   pip install .
   ```
-3. Rode o database.py para gerar o banco de dados.
-4. Coloque seus tokens e keys da api do twitter nas variáveis de ambientes especificadas:
+
+3. Coloque seus tokens e keys da api do twitter nas variáveis de ambientes especificadas:
 ```bash
 export QUEROLER_CONSUMER_KEY='sua consumer_key'
 export QUEROLER_CONSUMER_SECRET='sua consumer_secret'
@@ -34,7 +34,11 @@ export QUEROLER_ACCESS_SECRET='sua access_secret'
 
 ```
 
-5. Rode `poetry run querolerbot`
+4. Rode
+
+```bash
+querolerbot
+```
 
 ## Como contribuir ?
 Sinta-se a vontade para contribuir com o que quiser.
