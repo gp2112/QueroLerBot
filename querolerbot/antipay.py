@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from telegraph import Telegraph
 from querolerbot import database
+from querolerbot.config import HOME
 import json
 import requests
 
@@ -23,7 +24,7 @@ def get_news_content(url):
 	r = requests.get(url)
 	r.encoding = r.apparent_encoding
 	soup = BeautifulSoup(r.text, 'html.parser')
-	with open('news_classes.json', 'r') as f: 
+	with open(f'{HOME}/news_classes.json', 'r') as f: 
 		classes = json.load(f)
 
 	if domain in classes:

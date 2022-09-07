@@ -1,10 +1,8 @@
+from querolerbot.config import read_config, HOME
 import sqlite3
-import toml
 
-with open('config.toml') as f:
-    config = toml.load(f)
-
-db_name = config['database']['name']
+config = read_config()
+db_name = HOME+'/'+config['database']['name']
 
 def create_db():
 	print(f'Criando {db_name}...')
