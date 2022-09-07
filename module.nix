@@ -104,12 +104,7 @@ in {
     systemd.services.querolerbot = {
       description = "QueroLerBot";
       wantedBy = [ "multi-user.target" ];
-      environment = with cfg.credentials; {
-        QUEROLER_CONSUMER_KEY = consumerKey;
-        QUEROLER_CONSUMER_SECRET = consumerSecret;
-        QUEROLER_ACCESS_KEY = accessKey;
-        QUEROLER_ACCESS_SECRET = accessSecret;
-        QUEROLER_BAERER_TOKEN = token;
+      environment = {
         QUEROLER_CONFIG_PATH = "/etc/querolerbot.toml";
       };
       serviceConfig = {
