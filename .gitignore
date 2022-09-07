@@ -5,7 +5,7 @@ __pycache__/
 *.db
 # C extensions
 *.so
-
+result
 lastid
 dist/*
 

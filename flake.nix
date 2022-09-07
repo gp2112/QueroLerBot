@@ -1,10 +1,9 @@
 {
   description = "Application packaged using poetry2nix";
 
-  inputs.utils.url = "github:numtide/flake-utils";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs";
 
-  outputs = inputs @ { self, nixpkgs, utils, ... }:
+  outputs = { nixpkgs, ... }:
     let
       inherit (nixpkgs) lib;
       pkgsFor = nixpkgs.legacyPackages;
