@@ -9,7 +9,7 @@ import requests
 telegraph_user = '@queroler_bot'
 
 banned_tags = (
-		'span', 'small', 'div', 'label', 'svg', 'g', 'path', 'script', 'sub'
+		'span', 'small', 'div', 'label', 'svg', 'g', 'path', 'script', 'sub', 'button'
 	)
 
 
